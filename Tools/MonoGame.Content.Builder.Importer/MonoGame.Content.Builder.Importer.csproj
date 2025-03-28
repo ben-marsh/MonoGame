@@ -1,0 +1,66 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <RollForward>Major</RollForward>
+    <BaseOutputPath>..\..\Artifacts\MonoGame.Content.Builder.Importer</BaseOutputPath>
+    <AppendTargetFrameworkToOutputPath>False</AppendTargetFrameworkToOutputPath>
+    <AssemblyName>mgcb-importer</AssemblyName>
+    <AssemblyTitle>MGCB Importer</AssemblyTitle>
+
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>mgcb-importer</ToolCommandName>
+    <PackageOutputPath>./nupkg</PackageOutputPath>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>mgcb-importer</PackageId>
+    <Authors>Ben Marsh</Authors>
+    <Product>mgcb-importer</Product>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageProjectUrl>https://github.com/ben-marsh/MonoGame</PackageProjectUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\MonoGame.Content.Builder.Editor\Common\ContentItem.cs" Link="Common\ContentItem.cs" />
+    <Compile Include="..\MonoGame.Content.Builder.Editor\Common\ContentItem.Importer.cs" Link="Common\ContentItem.Importer.cs" />
+    <Compile Include="..\MonoGame.Content.Builder.Editor\Common\ContentItem.Processor.cs" Link="Common\ContentItem.Processor.cs" />
+    <Compile Include="..\MonoGame.Content.Builder.Editor\Common\ContentItemTemplate.cs" Link="Common\ContentItemTemplate.cs" />
+    <Compile Include="..\MonoGame.Content.Builder.Editor\Common\CustomPropertyDescriptors.cs" Link="Common\CustomPropertyDescriptors.cs" />
+    <Compile Include="..\MonoGame.Content.Builder.Editor\Common\DirectoryItem.cs" Link="Common\DirectoryItem.cs" />
+    <Compile Include="..\MonoGame.Content.Builder.Editor\Common\Extensions.cs" Link="Common\Extensions.cs" />
+    <Compile Include="..\MonoGame.Content.Builder.Editor\Common\FileType.cs" Link="Common\FileType.cs" />
+    <Compile Include="..\MonoGame.Content.Builder.Editor\Common\IController.cs" Link="Common\IController.cs" />
+    <Compile Include="..\MonoGame.Content.Builder.Editor\Common\IncludeItem.cs" Link="Common\IncludeItem.cs" />
+    <Compile Include="..\MonoGame.Content.Builder.Editor\Common\IProjectAction.cs" Link="Common\IProjectAction.cs" />
+    <Compile Include="..\MonoGame.Content.Builder.Editor\Common\IProjectItem.cs" Link="Common\IProjectItem.cs" />
+    <Compile Include="..\MonoGame.Content.Builder.Editor\Common\IProjectObserver.cs" Link="Common\IProjectObserver.cs" />
+    <Compile Include="..\MonoGame.Content.Builder.Editor\Common\IView.cs" Link="Common\IView.cs" />
+    <Compile Include="..\MonoGame.Content.Builder.Editor\Common\MenuInfo.cs" Link="Common\MenuInfo.cs" />
+    <Compile Include="..\MonoGame.Content.Builder.Editor\Common\OutputParser.cs" Link="Common\OutputParser.cs" />
+    <Compile Include="..\MonoGame.Content.Builder.Editor\Common\PipelineProject.cs" Link="Common\PipelineProject.cs" />
+    <Compile Include="..\MonoGame.Content.Builder.Editor\Common\PipelineProjectParser.cs" Link="Common\PipelineProjectParser.cs" />
+    <Compile Include="..\MonoGame.Content.Builder.Editor\Common\PipelineSettings.cs" Link="Common\PipelineSettings.cs" />
+    <Compile Include="..\MonoGame.Content.Builder.Editor\Common\PipelineTypes.cs" Link="Common\PipelineTypes.cs" />
+    <Compile Include="..\MonoGame.Content.Builder.Editor\Common\ProjectState.cs" Link="Common\ProjectState.cs" />
+    <Compile Include="..\MonoGame.Content.Builder.Editor\Common\StringExtensions.cs" Link="Common\StringExtensions.cs" />
+    <Compile Include="..\MonoGame.Content.Builder.Editor\Common\Util.cs" Link="Common\Util.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\MonoGame.Content.Builder\CommandLineParser.cs" Link="Builder\CommandLineParser.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\MonoGame.Framework\MonoGame.Framework.DesktopGL.csproj">
+      <AdditionalProperties>CopyContentFiles=False</AdditionalProperties>
+    </ProjectReference>
+    <ProjectReference Include="..\..\MonoGame.Framework.Content.Pipeline\MonoGame.Framework.Content.Pipeline.csproj">
+      <AdditionalProperties>CopyContentFiles=False</AdditionalProperties>
+    </ProjectReference>
+  </ItemGroup>
+
+</Project>
