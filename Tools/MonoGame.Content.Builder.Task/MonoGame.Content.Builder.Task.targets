@@ -95,7 +95,7 @@
       - PlatformResourcePrefix: the platform-specific prefix for included content paths
       - MonoGameMGCBAdditionalArguments: extra arguments to add to the MGCB call
   -->
-  <Target Name="PrepareContentBuilder" DependsOnTargets="CollectContentReferences">
+  <Target Name="PrepareContentBuilder" DependsOnTargets="ValidateDotnetInstallation;CollectContentReferences">
 
     <PropertyGroup>
       <PlatformResourcePrefix Condition="'$(MonoGamePlatform)' == 'MacOSX'">$(MonoMacResourcePrefix)</PlatformResourcePrefix>
@@ -122,6 +122,12 @@
     <MakeDir Directories="%(ContentReference.ContentIntermediateOutputDir)"/>
 
   </Target>
+	
+  <!-- When running on Windows ARM64, verify that the X64 DotNet toolchain is installed. -->
+  <Target Name="ValidateDotnetInstallation">
+    <Error Text="Please install the X64 .NET runtime to use the MonoGame content pipeline on ARM64."
+         Condition="'$(DotnetCommand)' == '$(DotnetX64OnArm64Path)' And !Exists('$(DotnetX64OnArm64Path)')" />
+  </Target>
 
   <Target Name="_CollectDotnetToolConfigFiles">
     <ItemGroup>
@@ -133,7 +139,7 @@
   <Target Name="_RestoreMGCBTool"
         Condition="'$(AutoRestoreMGCBTool)' == 'true' And '$(DesignTimeBuild)' != 'true'"
         BeforeTargets="CollectPackageReferences"
-        DependsOnTargets="_CollectDotnetToolConfigFiles"
+        DependsOnTargets="ValidateDotnetInstallation;_CollectDotnetToolConfigFiles"
         Inputs="$(MSBuildProjectFullPath);@(_DotnetToolConfigFiles);$(ProjectAssetsFile)"
         Outputs="$(IntermediateOutputPath)mgcb.tool.restore">
     <Exec
