@@ -44,25 +44,32 @@ namespace MonoGame.Tools.Pipeline
             }
 
             // Handle the contentproj import
-            List<string> buildArgs = new List<string>();
             foreach(string importPath in options.ImportProjects)
             {
-                PipelineProject project = new PipelineProject();
+                string outputPath = Path.GetFullPath(importPath.Remove(importPath.LastIndexOf('.')) + ".mgcb");
 
-                PipelineProjectParser projectParser = new PipelineProjectParser(new Observer(), project);
-                projectParser.ImportProject(importPath);
+                FileInfo importFile = new FileInfo(importPath);
+                FileInfo outputFile = new FileInfo(outputPath);
 
-                PipelineTypes.Load(project);
-                foreach (var i in project.ContentItems)
+                if(!importFile.Exists || !outputFile.Exists || importFile.LastWriteTimeUtc > outputFile.LastWriteTimeUtc)
                 {
-                    i.ResolveTypes();
+                    PipelineProject project = new PipelineProject();
+
+                    PipelineProjectParser projectParser = new PipelineProjectParser(new Observer(), project);
+                    projectParser.ImportProject(importPath);
+
+                    project.OriginalPath = outputPath;
+
+                    PipelineTypes.Load(project);
+                    foreach (var i in project.ContentItems)
+                    {
+                        i.ResolveTypes();
+                    }
+
+                    projectParser.SaveProject();
+
+                    Console.WriteLine("{0} -> {1}", importPath, outputPath);
                 }
-
-                projectParser.SaveProject();
-
-                string outputPath = Path.GetFullPath(project.OriginalPath);
-                Console.WriteLine("{0} -> {1}", importPath, outputPath);
-                buildArgs.Add(outputPath);
             }
 
             return 0;
