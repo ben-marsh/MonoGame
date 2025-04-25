@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Threading;
 
 namespace MonoGame.Tools.Pipeline
@@ -41,8 +42,11 @@ namespace MonoGame.Tools.Pipeline
                 return 1;
             }
 
+            FileInfo toolFile = new FileInfo(Assembly.GetExecutingAssembly().Location);
+            DateTime inputTime = (toolFile.LastWriteTimeUtc > importFile.LastWriteTimeUtc)? toolFile.LastWriteTimeUtc : importFile.LastWriteTimeUtc;
+
             FileInfo outputFile = new FileInfo(Path.GetFullPath(args[1]));
-            if(!outputFile.Exists || importFile.LastWriteTimeUtc > outputFile.LastWriteTimeUtc)
+            if(!outputFile.Exists || inputTime > outputFile.LastWriteTimeUtc)
             {
                 PipelineProject project = new PipelineProject();
 
