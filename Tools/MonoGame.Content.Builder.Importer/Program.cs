@@ -13,15 +13,6 @@ namespace MonoGame.Tools.Pipeline
 {
     public static class Program
     {
-        class ImportOptions
-        {
-            [CommandLineParameter(
-                Name = "import",
-                ValueName = "path",
-                Description = "XNA content project to import")]
-            public List<string> ImportProjects { get; set; } = new List<string>();
-        }
-
         class Observer : IContentItemObserver
         {
             public void OnItemModified(ContentItem item)
@@ -34,41 +25,41 @@ namespace MonoGame.Tools.Pipeline
         [STAThread]
         public static int Main(string[] args)
         {
-            ImportOptions options = new ImportOptions();
-
-            MGBuildParser parser = new MGBuildParser(options);
-            if(!parser.Parse(args))
+            if (args.Length != 2)
             {
+                Console.WriteLine("Usage:");
+                Console.WriteLine("  mgcb-importer <InputFile> <OutputFile>");
+                Console.WriteLine();
+                Console.WriteLine("Converts XNA content project to MGCB format.");
+                return 0;
+            }
+
+            FileInfo importFile = new FileInfo(Path.GetFullPath(args[0]));
+            if(!importFile.Exists)
+            {
+                Console.Error.WriteLine($"Input file '{importFile.FullName}' does not exist");
                 return 1;
             }
 
-            // Handle the contentproj import
-            foreach(string importPath in options.ImportProjects)
+            FileInfo outputFile = new FileInfo(Path.GetFullPath(args[1]));
+            if(!outputFile.Exists || importFile.LastWriteTimeUtc > outputFile.LastWriteTimeUtc)
             {
-                string outputPath = Path.GetFullPath(importPath.Remove(importPath.LastIndexOf('.')) + ".mgcb");
+                PipelineProject project = new PipelineProject();
 
-                FileInfo importFile = new FileInfo(importPath);
-                FileInfo outputFile = new FileInfo(outputPath);
+                PipelineProjectParser projectParser = new PipelineProjectParser(new Observer(), project);
+                projectParser.ImportProject(importFile.FullName);
 
-                if(!importFile.Exists || !outputFile.Exists || importFile.LastWriteTimeUtc > outputFile.LastWriteTimeUtc)
+                project.OriginalPath = outputFile.FullName;
+
+                PipelineTypes.Load(project);
+                foreach (var i in project.ContentItems)
                 {
-                    PipelineProject project = new PipelineProject();
-
-                    PipelineProjectParser projectParser = new PipelineProjectParser(new Observer(), project);
-                    projectParser.ImportProject(importPath);
-
-                    project.OriginalPath = outputPath;
-
-                    PipelineTypes.Load(project);
-                    foreach (var i in project.ContentItems)
-                    {
-                        i.ResolveTypes();
-                    }
-
-                    projectParser.SaveProject();
-
-                    Console.WriteLine("{0} -> {1}", importPath, outputPath);
+                    i.ResolveTypes();
                 }
+
+                projectParser.SaveProject();
+
+                Console.WriteLine("{0} -> {1}", importFile.Name, outputFile.FullName);
             }
 
             return 0;

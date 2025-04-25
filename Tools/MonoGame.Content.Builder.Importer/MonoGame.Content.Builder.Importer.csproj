@@ -18,7 +18,7 @@
     <Product>mgcb-importer</Product>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageProjectUrl>https://github.com/ben-marsh/MonoGame</PackageProjectUrl>
-    <Version>3.8.3.2</Version>
+    <Version>3.8.3.3</Version>
   </PropertyGroup>
 
   <ItemGroup>

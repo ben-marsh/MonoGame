@@ -4,6 +4,10 @@ Tool packaging functionality from the Monogame Content Editor to allow importing
 
 ## Version History
 
+### 3.8.3.3
+
+* Restore original command line format (`mgcb-importer <input-file> <output-file>`)
+
 ### 3.8.3.2
 
 * Output file is no longer updated unless input file has a newer timestamp
