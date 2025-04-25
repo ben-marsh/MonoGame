@@ -1,3 +1,14 @@
 # Mgcb-Importer
 
 Tool packaging functionality from the Monogame Content Editor to allow importing legacy XNA project files from the command line.
+
+## Version History
+
+### 3.8.3.2
+
+* Output file is no longer updated unless input file has a newer timestamp
+* Compiled for release
+
+### 3.8.3.1
+
+* Initial version
