@@ -4,6 +4,10 @@ Tool packaging functionality from the Monogame Content Editor to allow importing
 
 ## Version History
 
+### 3.8.3.5
+
+* Fix imported item link paths not being escaped correctly.
+
 ### 3.8.3.4
 
 * Include tool timestamp in out-of-date check
