@@ -2,6 +2,23 @@
 
 Tool packaging functionality from the Monogame Content Editor to allow importing legacy XNA project files from the command line.
 
+## Adding to a project
+
+To install as a [local tool](https://learn.microsoft.com/en-us/dotnet/core/tools/global-tools#install-a-local-tool), run:
+
+  ```cmd
+  dotnet tool install mgcb-importer --create-manifest-if-needed
+  ```
+
+Run as a pre-build step from a .csproj file as follows:
+
+  ```xml
+  <Target Name="ImportContent" BeforeTargets="CollectContentReferences">
+    <Exec Command="&quot;$(DotnetCommand)&quot; tool restore"/>
+    <Exec Command="&quot;$(DotnetCommand)&quot; mgcb-importer &quot;..\MyContentProject\MyContent.contentproj&quot; &quot;..\MyContentProject\MyContent.mgcb&quot;" />
+  </Target>
+  ```
+
 ## Version History
 
 ### 3.8.3.5
